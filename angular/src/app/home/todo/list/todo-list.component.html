@@ -7,6 +7,7 @@
       <th scope="col">Status</th>
       <th scope="col">Priority</th>
       <th scope="col">Due Date</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -35,6 +36,18 @@
       <td>
         {{ todo.dueDate | date: 'M/d/yyyy' }}
         <small class="text-muted">{{ todo.dueDate | date: 'shortTime' }}</small>
+      </td>
+      <td>
+        <div class="d-flex gap-2">
+          <button
+            class="btn btn-sm btn-danger"
+            openDelay="500"
+            ngbTooltip="Delete"
+            (click)="deleteTodo(todo.id, todo.title)"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
       </td>
     </tr>
   </tbody>

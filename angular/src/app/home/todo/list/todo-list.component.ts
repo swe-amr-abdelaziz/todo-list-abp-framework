@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoPriority, TodoStatus } from 'src/app/proxy';
 import { TodoDto } from 'src/app/proxy/dtos/todo';
 
@@ -10,10 +11,12 @@ import { TodoDto } from 'src/app/proxy/dtos/todo';
 })
 export class TodoListComponent {
   @Input() todoList: TodoDto[] = [];
+  @Output() todoDeleted = new EventEmitter<string>();
+
   TodoStatus = TodoStatus;
   TodoPriority = TodoPriority;
 
-  constructor() { }
+  constructor(private readonly confirmation: ConfirmationService) { }
 
   trackById(_: number, item: TodoDto): string {
     return item.id;
@@ -43,5 +46,15 @@ export class TodoListComponent {
       default:
         return '';
     }
+  }
+
+  deleteTodo(id: string, title: string): void {
+    this.confirmation
+      .warn(`Are you sure you want to delete the todo of title: "${title}" ?`, 'Delete Todo')
+      .subscribe(result => {
+        if (result === Confirmation.Status.confirm) {
+          this.todoDeleted.emit(id);
+        }
+      });
   }
 }

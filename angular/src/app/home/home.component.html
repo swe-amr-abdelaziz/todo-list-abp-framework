@@ -4,7 +4,7 @@
       <div class="card-title">Todo List</div>
     </div>
     <div class="card-body">
-      <app-todo-list [todoList]="todoList" />
+      <app-todo-list [todoList]="todoList" (todoDeleted)="deleteTodo($event)" />
     </div>
   </div>
 </div>

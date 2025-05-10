@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TodoList.Dtos.Todo;
 using TodoList.Services;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
 namespace TodoList
@@ -19,6 +20,16 @@ namespace TodoList
             return todos
                 .Select((todo) => ObjectMapper.Map<Todo, TodoDto>(todo))
                 .ToList();
+        }
+        
+        public async Task DeleteAsync(Guid id)
+        {
+            var todo = await _todoRepository.GetAsync(t => t.Id == id);
+            if (todo is null)
+            {
+                throw new EntityNotFoundException("Todo not found");
+            }
+            await _todoRepository.DeleteAsync(t => t.Id == id);
         }
     }
 }
