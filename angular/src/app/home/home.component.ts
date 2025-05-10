@@ -4,7 +4,7 @@ import { TodoService } from '../proxy';
 import { ToasterService } from '@abp/ng.theme.shared';
 import { AsyncComponent } from '../shared/classes/async-component.interface';
 import { TodoFormService } from './todo/form/todo-form.service';
-import { TodoFormOutput } from '../shared/interfaces';
+import { TodoFormOutput, TodoStatusUpdatedOutput } from '../shared/interfaces';
 
 @Component({
   standalone: false,
@@ -56,6 +56,16 @@ export class HomeComponent extends AsyncComponent implements OnInit {
     } else {
       this.todoList.push(todoFormOutput.todo);
     }
+  }
+
+  updateTodoStatus(payload: TodoStatusUpdatedOutput) {
+    this.todoList = this.todoList.map(todo => {
+      if (todo.id === payload.id) {
+        return { ...todo, status: payload.status };
+      }
+      return todo;
+    });
+    this.toast.success('Todo status has been updated successfully');
   }
 
   deleteTodo(id: string): void {

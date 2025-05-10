@@ -953,6 +953,23 @@
                   }
                 },
                 {
+                  "name": "UpdateStatusAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "TodoList.TodoStatus",
+                    "typeSimple": "enum"
+                  }
+                },
+                {
                   "name": "DeleteAsync",
                   "parametersOnMethod": [
                     {
@@ -1115,6 +1132,43 @@
               "returnValue": {
                 "type": "TodoList.Dtos.Todo.TodoDto",
                 "typeSimple": "TodoList.Dtos.Todo.TodoDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "TodoList.Services.ITodoService"
+            },
+            "UpdateStatusAsyncById": {
+              "uniqueName": "UpdateStatusAsyncById",
+              "name": "UpdateStatusAsync",
+              "httpMethod": "PUT",
+              "url": "api/app/todo/{id}/status",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "TodoList.TodoStatus",
+                "typeSimple": "enum"
               },
               "allowAnonymous": null,
               "implementFrom": "TodoList.Services.ITodoService"

@@ -39,20 +39,23 @@
       </td>
       <td>
         <div class="d-flex gap-2">
-          <button
-            class="btn btn-sm btn-warning"
-            openDelay="500"
-            ngbTooltip="Edit"
-            (click)="openEditForm(todo.id)"
-          >
+          <button class="btn btn-sm" [ngClass]="{
+              'btn-primary': todo.status === TodoStatus.Pending,
+              'btn-success': todo.status === TodoStatus.InProgress,
+            }" openDelay="500" [disabled]="todo.status === TodoStatus.Completed"
+            [ngbTooltip]="todo.status === TodoStatus.Pending ? 'Start Todo' : 'Mark As Completed'"
+            (click)="updateTodoStatus(todo.id, todo.status, todo.title)">
+            <i [ngClass]="{
+                'bi bi-play-fill': todo.status === TodoStatus.Pending,
+                'bi bi-check-lg': todo.status === TodoStatus.InProgress,
+                'bi bi-dash-lg': todo.status === TodoStatus.Completed,
+              }"></i>
+          </button>
+          <button class="btn btn-sm btn-warning" openDelay="500" ngbTooltip="Edit" (click)="openEditForm(todo.id)">
             <i class="bi bi-pencil-square"></i>
           </button>
-          <button
-            class="btn btn-sm btn-danger"
-            openDelay="500"
-            ngbTooltip="Delete"
-            (click)="deleteTodo(todo.id, todo.title)"
-          >
+          <button class="btn btn-sm btn-danger" openDelay="500" ngbTooltip="Delete"
+            (click)="deleteTodo(todo.id, todo.title)">
             <i class="bi bi-trash"></i>
           </button>
         </div>

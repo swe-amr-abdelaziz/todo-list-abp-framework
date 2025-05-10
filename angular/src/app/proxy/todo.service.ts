@@ -1,4 +1,5 @@
 import type { CreateTodoDto, TodoDto, UpdateTodoDto } from './dtos/todo/models';
+import type { TodoStatus } from './todo-status.enum';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
 
@@ -47,6 +48,14 @@ export class TodoService {
       method: 'PUT',
       url: `/api/app/todo/${id}`,
       body: todoDto,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  updateStatus = (id: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, TodoStatus>({
+      method: 'PUT',
+      url: `/api/app/todo/${id}/status`,
     },
     { apiName: this.apiName,...config });
 

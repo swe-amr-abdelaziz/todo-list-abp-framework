@@ -12,6 +12,7 @@ namespace TodoList.Services
         Task<TodoDto> GetAsync(Guid id);
         Task<TodoDto> CreateAsync(CreateTodoDto todoDto);
         Task<TodoDto> UpdateAsync(Guid id, UpdateTodoDto todoDto);
+        Task<TodoStatus> UpdateStatusAsync(Guid id);
         Task DeleteAsync(Guid id);
     }
 }

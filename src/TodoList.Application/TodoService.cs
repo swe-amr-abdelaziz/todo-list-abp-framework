@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using TodoList.Dtos.Todo;
 using TodoList.Services;
 using Volo.Abp.Application.Services;
@@ -54,6 +55,25 @@ namespace TodoList
             await _todoRepository.UpdateAsync(todo);
             
             return ObjectMapper.Map<Todo, TodoDto>(todo);
+        }
+        
+        public async Task<TodoStatus> UpdateStatusAsync(Guid id)
+        {
+            var todo = await _todoRepository.GetAsync(t => t.Id == id);
+            if (todo is null)
+            {
+                throw new EntityNotFoundException("Todo not found");
+            }
+            todo.Status = todo.Status switch
+            {
+                TodoStatus.Pending => TodoStatus.InProgress,
+                TodoStatus.InProgress => TodoStatus.Completed,
+                TodoStatus.Completed => throw new BadHttpRequestException("Todo is already completed"),
+                _ => throw new BadHttpRequestException("Todo status is unknown"),
+            };
+            
+            await _todoRepository.UpdateAsync(todo);
+            return todo.Status;
         }
 
         public async Task DeleteAsync(Guid id)
