@@ -1,5 +1,6 @@
 import type { TodoStatus } from '../../todo-status.enum';
 import type { TodoPriority } from '../../todo-priority.enum';
+import type { TodoSortBy } from './todo-sort-by.enum';
 
 export interface CreateTodoDto {
   title: string;
@@ -21,6 +22,8 @@ export interface TodoDto {
 export interface TodoQueryDto {
   status?: TodoStatus;
   priority?: TodoPriority;
+  sortBy?: TodoSortBy;
+  sortDescending?: boolean;
 }
 
 export interface UpdateTodoDto {

@@ -1039,6 +1039,30 @@
                   "constraintTypes": null,
                   "bindingSourceId": "ModelBinding",
                   "descriptorName": "todoQueryDto"
+                },
+                {
+                  "nameOnMethod": "todoQueryDto",
+                  "name": "SortBy",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "todoQueryDto"
+                },
+                {
+                  "nameOnMethod": "todoQueryDto",
+                  "name": "SortDescending",
+                  "jsonName": null,
+                  "type": "System.Boolean?",
+                  "typeSimple": "boolean?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "todoQueryDto"
                 }
               ],
               "returnValue": {
@@ -4115,8 +4139,52 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "SortBy",
+          "jsonName": null,
+          "type": "TodoList.Dtos.Todo.TodoSortBy?",
+          "typeSimple": "enum?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "SortDescending",
+          "jsonName": null,
+          "type": "System.Boolean?",
+          "typeSimple": "boolean?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
+    },
+    "TodoList.Dtos.Todo.TodoSortBy": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Title",
+        "Description",
+        "Status",
+        "Priority",
+        "DueDate"
+      ],
+      "enumValues": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "genericArguments": null,
+      "properties": null
     },
     "TodoList.Dtos.Todo.UpdateTodoDto": {
       "baseType": null,

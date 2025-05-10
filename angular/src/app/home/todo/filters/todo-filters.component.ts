@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TodoPriority, todoPriorityOptions, TodoStatus, todoStatusOptions } from 'src/app/proxy';
-import { TodoQueryDto } from 'src/app/proxy/dtos/todo';
+import { TodoQueryDto, TodoSortBy, todoSortByOptions } from 'src/app/proxy/dtos/todo';
 import { NavigatorService } from 'src/app/shared/services/navigator.service';
 
 @Component({
@@ -16,6 +16,9 @@ export class TodoFiltersComponent implements OnInit {
   todoStatusOptions = todoStatusOptions;
   TodoPriority = TodoPriority;
   todoPriorityOptions = todoPriorityOptions;
+  TodoSortBy = TodoSortBy;
+  todoSortByOptions = todoSortByOptions;
+  sortDescending: boolean = false;
 
   constructor(
     private readonly navigatorService: NavigatorService,
@@ -28,6 +31,8 @@ export class TodoFiltersComponent implements OnInit {
       this.todoQueryParams = {
         priority: params['priority'] || null,
         status: params['status'] || null,
+        sortBy: params['sortBy'] || null,
+        sortDescending: params['sortDescending'] || null,
       };
     });
   }
@@ -40,5 +45,16 @@ export class TodoFiltersComponent implements OnInit {
   onPriorityChange(event: Event): void {
     const priority = TodoPriority[(<HTMLInputElement>event.target).value];
     this.navigatorService.refresh({ priority });
+  }
+
+  onSortByChange(event: Event): void {
+    const sortBy = TodoSortBy[(<HTMLInputElement>event.target).value];
+    this.navigatorService.refresh({ sortBy });
+  }
+
+  onSortOrderChange(event: Event): void {
+    const sortOrder = (<HTMLInputElement>event.target).value;
+    this.sortDescending = sortOrder === 'Descending';
+    this.navigatorService.refresh({ sortDescending: this.sortDescending });
   }
 }

@@ -84,6 +84,8 @@ export class HomeComponent extends AsyncComponent implements OnInit {
       this.getList({
         priority: params['priority'] || null,
         status: params['status'] || null,
+        sortBy: params['sortBy'] || null,
+        sortDescending: params['sortDescending'] || null,
       });
     });
   }

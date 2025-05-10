@@ -89,6 +89,17 @@ namespace TodoList
         private async Task<List<Todo>> _getListWithQueriesAsync(TodoQueryDto todoQueryDto)
         {
             var queryable = await _todoRepository.GetQueryableAsync();
+            queryable = _getListWithFilterQueries(queryable, todoQueryDto);
+            if (todoQueryDto.SortBy is not null)
+            {
+                queryable = _getListWithSortQueries(queryable, todoQueryDto);
+            }
+            return await AsyncExecuter.ToListAsync(queryable);
+        }
+
+        private static IQueryable<Todo> _getListWithFilterQueries(IQueryable<Todo> queryable,
+            TodoQueryDto todoQueryDto)
+        {
             if (todoQueryDto.Status is not null)
             {
                 queryable = queryable.Where(t => t.Status == todoQueryDto.Status);
@@ -97,7 +108,45 @@ namespace TodoList
             {
                 queryable = queryable.Where(t => t.Priority == todoQueryDto.Priority);
             }
-            return await AsyncExecuter.ToListAsync(queryable);
+            return queryable;
+        }
+
+        private static IQueryable<Todo> _getListWithSortQueries(IQueryable<Todo> queryable,
+            TodoQueryDto todoQueryDto)
+        {
+            if (todoQueryDto.SortDescending is null or false)
+            {
+                queryable = todoQueryDto.SortBy switch
+                {
+                    TodoSortBy.Title => queryable.OrderBy(t => t.Title),
+                    TodoSortBy.Description => queryable.OrderBy(t => t.Description),
+                    TodoSortBy.Status => queryable.AsEnumerable()
+                        .OrderBy(t => (int)Enum.Parse<TodoStatus>($"{t.Status}"))
+                        .AsQueryable(),
+                    TodoSortBy.Priority => queryable.AsEnumerable()
+                        .OrderBy(t => (int)Enum.Parse<TodoPriority>($"{t.Priority}"))
+                        .AsQueryable(),
+                    TodoSortBy.DueDate => queryable.OrderBy(t => t.DueDate),
+                    _ => queryable,
+                };
+            }
+            else
+            {
+                queryable = todoQueryDto.SortBy switch
+                {
+                    TodoSortBy.Title => queryable.OrderByDescending(t => t.Title),
+                    TodoSortBy.Description => queryable.OrderByDescending(t => t.Description),
+                    TodoSortBy.Status => queryable.AsEnumerable()
+                        .OrderByDescending(t => (int)Enum.Parse<TodoStatus>($"{t.Status}"))
+                        .AsQueryable(),
+                    TodoSortBy.Priority => queryable.AsEnumerable()
+                        .OrderByDescending(t => (int)Enum.Parse<TodoPriority>($"{t.Priority}"))
+                        .AsQueryable(),
+                    TodoSortBy.DueDate => queryable.OrderByDescending(t => t.DueDate),
+                    _ => queryable,
+                };
+            }
+            return queryable;
         }
     }
 }

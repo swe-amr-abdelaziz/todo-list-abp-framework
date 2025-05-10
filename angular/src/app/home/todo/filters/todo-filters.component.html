@@ -21,4 +21,24 @@
       </select>
     </div>
   </div>
+  <div class="row g-2 mt-0">
+    <div class="col-md-6">
+      <label for="sortBy">Sort By</label>
+      <select class="form-control form-control-sm" id="sortBy" (change)="onSortByChange($event)">
+        <option [ngValue]="">Default</option>
+        <option [ngValue]="sortBy.value" [selected]="sortBy.value == todoQueryParams.sortBy"
+          *ngFor="let sortBy of todoSortByOptions">
+          {{ TodoSortBy[sortBy.value] }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="sortOrder">Sort Order</label>
+      <select class="form-control form-control-sm" id="sortOrder" (change)="onSortOrderChange($event)"
+        [disabled]="!todoQueryParams.sortBy">
+        <option [ngValue]="false" [selected]="sortDescending == false">Ascending</option>
+        <option [ngValue]="true" [selected]="sortDescending == true">Descending</option>
+      </select>
+    </div>
+  </div>
 </div>

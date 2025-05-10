@@ -79,6 +79,7 @@ This is a layered startup solution based on [Domain Driven Design (DDD)](https:/
 - Input validations
 - Marking todos as completed
 - Status and priority filters are added to the list
+- Sorting by { `title`, `description`, `status`, `priority`, `due date` }, ascending and descending
 - Bonus: Loading spinner applied for a better user experience
 
 ## Challenges Faced
