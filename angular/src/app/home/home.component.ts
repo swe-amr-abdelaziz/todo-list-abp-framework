@@ -1,5 +1,6 @@
-import { AuthService } from '@abp/ng.core';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TodoDto } from '../proxy/dtos/todo';
+import { TodoService } from '../proxy';
 
 @Component({
   standalone: false,
@@ -7,14 +8,14 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
-  get hasLoggedIn(): boolean {
-    return this.authService.isAuthenticated
-  }
+export class HomeComponent implements OnInit {
+  todoList: TodoDto[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(private readonly todoService: TodoService) {}
 
-  login() {
-    this.authService.navigateToLogin();
+  ngOnInit(): void {
+    this.todoService.getList().subscribe(todoList => {
+      this.todoList = todoList;
+    });
   }
 }
