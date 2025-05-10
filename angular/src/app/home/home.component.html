@@ -16,6 +16,7 @@
       </div>
     </div>
     <div class="card-body">
+      <app-todo-filters />
       <app-wrapper [isLoading]="isLoading || todoFormService.isLoading">
         <app-todo-list [todoList]="todoList" (todoDeleted)="deleteTodo($event)"
           (todoStatusUpdated)="updateTodoStatus($event)" />

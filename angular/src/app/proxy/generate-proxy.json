@@ -887,7 +887,16 @@
               "methods": [
                 {
                   "name": "GetListAsync",
-                  "parametersOnMethod": [],
+                  "parametersOnMethod": [
+                    {
+                      "name": "todoQueryDto",
+                      "typeAsString": "TodoList.Dtos.Todo.TodoQueryDto, TodoList.Application.Contracts",
+                      "type": "TodoList.Dtos.Todo.TodoQueryDto",
+                      "typeSimple": "TodoList.Dtos.Todo.TodoQueryDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
                   "returnValue": {
                     "type": "System.Collections.Generic.List<TodoList.Dtos.Todo.TodoDto>",
                     "typeSimple": "[TodoList.Dtos.Todo.TodoDto]"
@@ -990,14 +999,36 @@
             }
           ],
           "actions": {
-            "GetListAsync": {
-              "uniqueName": "GetListAsync",
+            "GetListAsyncByTodoQueryDto": {
+              "uniqueName": "GetListAsyncByTodoQueryDto",
               "name": "GetListAsync",
               "httpMethod": "GET",
               "url": "api/app/todo",
               "supportedVersions": [],
-              "parametersOnMethod": [],
-              "parameters": [],
+              "parametersOnMethod": [
+                {
+                  "name": "todoQueryDto",
+                  "typeAsString": "TodoList.Dtos.Todo.TodoQueryDto, TodoList.Application.Contracts",
+                  "type": "TodoList.Dtos.Todo.TodoQueryDto",
+                  "typeSimple": "TodoList.Dtos.Todo.TodoQueryDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "todoQueryDto",
+                  "name": "Status",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "todoQueryDto"
+                }
+              ],
               "returnValue": {
                 "type": "System.Collections.Generic.List<TodoList.Dtos.Todo.TodoDto>",
                 "typeSimple": "[TodoList.Dtos.Todo.TodoDto]"
@@ -4033,6 +4064,27 @@
           "jsonName": null,
           "type": "System.DateTime?",
           "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "TodoList.Dtos.Todo.TodoQueryDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Status",
+          "jsonName": null,
+          "type": "TodoList.TodoStatus?",
+          "typeSimple": "enum?",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

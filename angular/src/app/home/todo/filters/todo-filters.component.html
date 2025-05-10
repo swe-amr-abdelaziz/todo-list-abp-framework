@@ -1,0 +1,10 @@
+<div class="mb-2">
+  <label for="status">Status</label>
+  <select class="form-control form-control-sm" id="status" (change)="onStatusChange($event)">
+    <option [ngValue]="">All</option>
+    <option [ngValue]="status.value" [selected]="status.value == todoQueryParams.status"
+      *ngFor="let status of todoStatusOptions">
+      {{ TodoStatus[status.value] }}
+    </option>
+  </select>
+</div>

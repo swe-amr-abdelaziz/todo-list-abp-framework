@@ -15,9 +15,9 @@ namespace TodoList
     {
         private readonly IRepository<Todo, Guid> _todoRepository = todoRepository;
         
-        public async Task<List<TodoDto>> GetListAsync()
+        public async Task<List<TodoDto>> GetListAsync(TodoQueryDto todoQueryDto)
         {
-            var todos = await _todoRepository.GetListAsync();
+            var todos = await _getListWithQueriesAsync(todoQueryDto);
             return todos
                 .Select((todo) => ObjectMapper.Map<Todo, TodoDto>(todo))
                 .ToList();
@@ -84,6 +84,16 @@ namespace TodoList
                 throw new EntityNotFoundException("Todo not found");
             }
             await _todoRepository.DeleteAsync(t => t.Id == id);
+        }
+
+        private async Task<List<Todo>> _getListWithQueriesAsync(TodoQueryDto todoQueryDto)
+        {
+            var queryable = await _todoRepository.GetQueryableAsync();
+            if (todoQueryDto.Status is not null)
+            {
+                queryable = queryable.Where(t => t.Status == todoQueryDto.Status);
+            }
+            return await AsyncExecuter.ToListAsync(queryable);
         }
     }
 }

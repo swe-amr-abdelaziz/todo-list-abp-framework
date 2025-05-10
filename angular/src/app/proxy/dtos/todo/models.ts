@@ -18,6 +18,10 @@ export interface TodoDto {
   dueDate?: string;
 }
 
+export interface TodoQueryDto {
+  status?: TodoStatus;
+}
+
 export interface UpdateTodoDto {
   title?: string;
   description?: string;

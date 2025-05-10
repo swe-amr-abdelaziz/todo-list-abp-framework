@@ -1,4 +1,4 @@
-import type { CreateTodoDto, TodoDto, UpdateTodoDto } from './dtos/todo/models';
+import type { CreateTodoDto, TodoDto, TodoQueryDto, UpdateTodoDto } from './dtos/todo/models';
 import type { TodoStatus } from './todo-status.enum';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
@@ -35,10 +35,11 @@ export class TodoService {
     { apiName: this.apiName,...config });
   
 
-  getList = (config?: Partial<Rest.Config>) =>
+  getList = (todoQueryDto: TodoQueryDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, TodoDto[]>({
       method: 'GET',
       url: '/api/app/todo',
+      params: { status: todoQueryDto.status },
     },
     { apiName: this.apiName,...config });
   

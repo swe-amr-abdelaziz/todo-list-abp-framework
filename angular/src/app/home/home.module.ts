@@ -12,9 +12,10 @@ import {
 import { TodoFormComponent } from './todo/form/todo-form.component';
 import { TodoFormService } from './todo/form/todo-form.service';
 import { FormsModule } from '@angular/forms';
+import { TodoFiltersComponent } from './todo/filters/todo-filters.component';
 
 @NgModule({
-  declarations: [HomeComponent, TodoListComponent, TodoFormComponent],
+  declarations: [HomeComponent, TodoListComponent, TodoFormComponent, TodoFiltersComponent],
   imports: [
     FormsModule,
     HomeRoutingModule,

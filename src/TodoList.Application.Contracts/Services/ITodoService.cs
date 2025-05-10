@@ -8,7 +8,7 @@ namespace TodoList.Services
 {
     public interface ITodoService : IApplicationService
     {
-        Task<List<TodoDto>> GetListAsync();
+        Task<List<TodoDto>> GetListAsync(TodoQueryDto todoQueryDto);
         Task<TodoDto> GetAsync(Guid id);
         Task<TodoDto> CreateAsync(CreateTodoDto todoDto);
         Task<TodoDto> UpdateAsync(Guid id, UpdateTodoDto todoDto);
