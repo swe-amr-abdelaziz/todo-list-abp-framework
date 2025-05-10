@@ -3,21 +3,18 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { NgxValidateCoreModule } from '@ngx-validate/core';
+import { WrapperComponent } from './components/wrapper/wrapper.component';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CoreModule,
-    ThemeSharedModule,
-    NgbDropdownModule,
-    NgxValidateCoreModule
-  ],
+  declarations: [WrapperComponent],
+  imports: [CoreModule, ThemeSharedModule, NgbDropdownModule, NgxValidateCoreModule],
   exports: [
     CoreModule,
     ThemeSharedModule,
     NgbDropdownModule,
-    NgxValidateCoreModule
+    NgxValidateCoreModule,
+    WrapperComponent,
   ],
-  providers: []
+  providers: [],
 })
 export class SharedModule {}

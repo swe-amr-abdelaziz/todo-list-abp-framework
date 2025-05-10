@@ -4,7 +4,9 @@
       <div class="card-title">Todo List</div>
     </div>
     <div class="card-body">
-      <app-todo-list [todoList]="todoList" (todoDeleted)="deleteTodo($event)" />
+      <app-wrapper [isLoading]="isLoading">
+        <app-todo-list [todoList]="todoList" (todoDeleted)="deleteTodo($event)" />
+      </app-wrapper>
     </div>
   </div>
 </div>
