@@ -50,24 +50,17 @@ export class HomeComponent extends AsyncComponent implements OnInit {
     } else {
       this.todoList.push(todoFormOutput.todo);
     }
+    this.filterTodoItemsAfterUpdate();
   }
 
   updateTodoStatus(payload: TodoStatusUpdatedOutput) {
-    this.todoList = this.todoList
-      .map(todo => {
-        if (todo.id === payload.id) {
-          return { ...todo, status: payload.status };
-        }
-        return todo;
-      })
-      .filter(
-        todo =>
-          !(
-            todo.id == payload.id &&
-            this.navigatorService.todoQueryParams.status &&
-            todo.status != this.navigatorService.todoQueryParams.status
-          ),
-      );
+    this.todoList = this.todoList.map(todo => {
+      if (todo.id === payload.id) {
+        return { ...todo, status: payload.status };
+      }
+      return todo;
+    });
+    this.filterTodoItemsAfterUpdate();
     this.toast.success('Todo status has been updated successfully');
   }
 
@@ -107,5 +100,19 @@ export class HomeComponent extends AsyncComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  private filterTodoItemsAfterUpdate(): void {
+    this.todoList = this.todoList.filter(
+      todo =>
+        !(
+          this.navigatorService.todoQueryParams.status &&
+          todo.status != this.navigatorService.todoQueryParams.status
+        ) &&
+        !(
+          this.navigatorService.todoQueryParams.priority &&
+          todo.priority != this.navigatorService.todoQueryParams.priority
+        ),
+    );
   }
 }
