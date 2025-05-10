@@ -62,7 +62,11 @@ export class HomeComponent extends AsyncComponent implements OnInit {
       })
       .filter(
         todo =>
-          !(todo.id == payload.id && todo.status != this.navigatorService.todoQueryParams.status),
+          !(
+            todo.id == payload.id &&
+            this.navigatorService.todoQueryParams.status &&
+            todo.status != this.navigatorService.todoQueryParams.status
+          ),
       );
     this.toast.success('Todo status has been updated successfully');
   }
