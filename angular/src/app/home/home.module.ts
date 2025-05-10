@@ -4,10 +4,26 @@ import { SharedModule } from '../shared/shared.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { TodoListComponent } from './todo/list/todo-list.component';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDatepickerModule,
+  NgbTimepickerModule,
+  NgbTooltipModule,
+} from '@ng-bootstrap/ng-bootstrap';
+import { TodoFormComponent } from './todo/form/todo-form.component';
+import { TodoFormService } from './todo/form/todo-form.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [HomeComponent, TodoListComponent],
-  imports: [SharedModule, HomeRoutingModule, PageModule, NgbTooltipModule],
+  declarations: [HomeComponent, TodoListComponent, TodoFormComponent],
+  imports: [
+    FormsModule,
+    HomeRoutingModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
+    NgbTooltipModule,
+    PageModule,
+    SharedModule,
+  ],
+  providers: [TodoFormService],
 })
 export class HomeModule {}

@@ -22,6 +22,40 @@ namespace TodoList
                 .ToList();
         }
         
+        public async Task<TodoDto> GetAsync(Guid id)
+        {
+            var todo = await _todoRepository.GetAsync(t => t.Id == id);
+            if (todo is null)
+            {
+                throw new EntityNotFoundException("Todo not found");
+            }
+            return ObjectMapper.Map<Todo, TodoDto>(todo);
+        }
+
+        public async Task<TodoDto> CreateAsync(CreateTodoDto todoDto)
+        {
+            todoDto.Normalize();
+            var mappedTodo = ObjectMapper.Map<CreateTodoDto, Todo>(todoDto);
+            var todo = await _todoRepository.InsertAsync(mappedTodo, true);
+            return ObjectMapper.Map<Todo, TodoDto>(todo);
+        }
+
+        public async Task<TodoDto> UpdateAsync(Guid id, UpdateTodoDto todoDto)
+        {
+            var todo = await _todoRepository.GetAsync(t => t.Id == id);
+            if (todo is null)
+            {
+                throw new EntityNotFoundException("Todo not found");
+            }
+            todoDto.Normalize();
+
+            ObjectMapper.Map(todoDto, todo);
+            todo.LastModifiedDate = DateTime.UtcNow;
+            await _todoRepository.UpdateAsync(todo);
+            
+            return ObjectMapper.Map<Todo, TodoDto>(todo);
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             var todo = await _todoRepository.GetAsync(t => t.Id == id);

@@ -8,6 +8,9 @@ namespace TodoList.Todos
         public TodoApplicationAutoMapperProfile()
         {
             CreateMap<Todo, TodoDto>();
+            CreateMap<CreateTodoDto, Todo>();
+            CreateMap<UpdateTodoDto, Todo>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

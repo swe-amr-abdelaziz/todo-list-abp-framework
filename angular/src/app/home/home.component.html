@@ -1,12 +1,25 @@
 <div class="container">
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Todo List</div>
+      <div class="row">
+        <div class="col col-md-6">
+          <h5 class="card-title">Todo List</h5>
+        </div>
+        <div class="text-end col col-md-6">
+          <div class="text-lg-end pt-2">
+            <button id="create" class="btn btn-primary" type="button" (click)="openAddForm()">
+              <i class="fa fa-plus me-1"></i>
+              <span>Add New Todo</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="card-body">
-      <app-wrapper [isLoading]="isLoading">
+      <app-wrapper [isLoading]="isLoading || todoFormService.isLoading">
         <app-todo-list [todoList]="todoList" (todoDeleted)="deleteTodo($event)" />
       </app-wrapper>
+      <app-todo-form (todoSubmitted)="updateTodoList($event)" />
     </div>
   </div>
 </div>

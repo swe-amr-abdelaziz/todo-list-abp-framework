@@ -1,4 +1,4 @@
-import type { TodoDto } from './dtos/todo/models';
+import type { CreateTodoDto, TodoDto, UpdateTodoDto } from './dtos/todo/models';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
 
@@ -9,9 +9,26 @@ export class TodoService {
   apiName = 'Default';
   
 
+  create = (todoDto: CreateTodoDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, TodoDto>({
+      method: 'POST',
+      url: '/api/app/todo',
+      body: todoDto,
+    },
+    { apiName: this.apiName,...config });
+  
+
   delete = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'DELETE',
+      url: `/api/app/todo/${id}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  get = (id: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, TodoDto>({
+      method: 'GET',
       url: `/api/app/todo/${id}`,
     },
     { apiName: this.apiName,...config });
@@ -21,6 +38,15 @@ export class TodoService {
     this.restService.request<any, TodoDto[]>({
       method: 'GET',
       url: '/api/app/todo',
+    },
+    { apiName: this.apiName,...config });
+  
+
+  update = (id: string, todoDto: UpdateTodoDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, TodoDto>({
+      method: 'PUT',
+      url: `/api/app/todo/${id}`,
+      body: todoDto,
     },
     { apiName: this.apiName,...config });
 

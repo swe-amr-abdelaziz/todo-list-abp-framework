@@ -3,6 +3,8 @@ import { TodoDto } from '../proxy/dtos/todo';
 import { TodoService } from '../proxy';
 import { ToasterService } from '@abp/ng.theme.shared';
 import { AsyncComponent } from '../shared/classes/async-component.interface';
+import { TodoFormService } from './todo/form/todo-form.service';
+import { TodoFormOutput } from '../shared/interfaces';
 
 @Component({
   standalone: false,
@@ -15,6 +17,7 @@ export class HomeComponent extends AsyncComponent implements OnInit {
 
   constructor(
     private readonly toast: ToasterService,
+    public readonly todoFormService: TodoFormService,
     private readonly todoService: TodoService,
   ) {
     super();
@@ -32,6 +35,27 @@ export class HomeComponent extends AsyncComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  openAddForm() {
+    this.todoFormService.open();
+  }
+
+  openEditForm(todoId: string) {
+    this.todoFormService.open(todoId);
+  }
+
+  updateTodoList(todoFormOutput: TodoFormOutput) {
+    if (todoFormOutput.isEdit) {
+      this.todoList = this.todoList.map(todo => {
+        if (todo.id === todoFormOutput.todo.id) {
+          return { ...todoFormOutput.todo };
+        }
+        return todo;
+      });
+    } else {
+      this.todoList.push(todoFormOutput.todo);
+    }
   }
 
   deleteTodo(id: string): void {

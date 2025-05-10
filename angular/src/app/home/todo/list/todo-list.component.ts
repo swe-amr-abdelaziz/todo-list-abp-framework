@@ -2,6 +2,7 @@ import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoPriority, TodoStatus } from 'src/app/proxy';
 import { TodoDto } from 'src/app/proxy/dtos/todo';
+import { TodoFormService } from '../form/todo-form.service';
 
 @Component({
   standalone: false,
@@ -16,7 +17,10 @@ export class TodoListComponent {
   TodoStatus = TodoStatus;
   TodoPriority = TodoPriority;
 
-  constructor(private readonly confirmation: ConfirmationService) { }
+  constructor(
+    private readonly confirmation: ConfirmationService,
+    private readonly todoFormService: TodoFormService,
+  ) {}
 
   trackById(_: number, item: TodoDto): string {
     return item.id;
@@ -46,6 +50,10 @@ export class TodoListComponent {
       default:
         return '';
     }
+  }
+
+  openEditForm(id: string) {
+    this.todoFormService.open(id);
   }
 
   deleteTodo(id: string, title: string): void {

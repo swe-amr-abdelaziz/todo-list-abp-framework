@@ -1,0 +1,51 @@
+<abp-modal [(visible)]="isFormOpen">
+  <ng-template #abpHeader>
+    <h3>{{ formTitle }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="mt-2">
+        <label for="title">Title</label><span> * </span>
+        <input type="text" id="title" class="form-control" formControlName="title" autofocus />
+      </div>
+
+      <div class="mt-2">
+        <label for="description">Description</label>
+        <input type="text" id="description" class="form-control" formControlName="description" />
+      </div>
+
+      <div class="mt-2">
+        <label for="status">Status</label>
+        <select class="form-control" id="status" formControlName="status">
+          <option [ngValue]="status.value" *ngFor="let status of todoStatusOptions">
+            {{ TodoStatus[status.value] }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mt-2">
+        <label for="priority">Priority</label>
+        <select class="form-control" id="priority" formControlName="priority">
+          <option [ngValue]="priority.value" *ngFor="let priority of todoPriorityOptions">
+            {{ TodoPriority[priority.value] }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mt-2">
+        <label for="dueDate">Due Date</label>
+        <ngb-datepicker id="dueDate" class="form-control" formControlName="dueDate" [minDate]="minDueDate" />
+      </div>
+
+      <div class="mt-2">
+        <label for="dueTime">Due Time</label>
+        <ngb-timepicker id="dueTime" class="form-control" formControlName="dueTime" />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" (click)="submit()">Submit</button>
+  </ng-template>
+</abp-modal>
