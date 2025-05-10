@@ -71,6 +71,8 @@ This is a layered startup solution based on [Domain Driven Design (DDD)](https:/
   abp install-libs
   ```
 
+- Node.js LTS (20.x): `https://nodejs.org/en/download/`
+
 ## What Has Been Completed
 
 - Basic CRUD operations
