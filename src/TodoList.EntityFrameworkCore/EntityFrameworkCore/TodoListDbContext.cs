@@ -1,5 +1,8 @@
+using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoList.Configurations;
+using TodoList.ValueConverters;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -84,5 +87,25 @@ public class TodoListDbContext :
         /* Configure your own tables/entities inside here */
 
         builder.ApplyConfiguration(new TodoConfiguration());
+        
+        var dateTimeUtcConverter = new DateTimeUtcConverter();
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            foreach (var property in entityType.GetProperties())
+            {
+                if (property.ClrType == typeof(DateTime))
+                {
+                    property.SetValueConverter(dateTimeUtcConverter);
+                }
+
+                if (property.ClrType == typeof(DateTime?))
+                {
+                    property.SetValueConverter(
+                        new ValueConverter<DateTime?, DateTime?>(
+                            v => v.HasValue ? v.Value.ToUniversalTime() : v,
+                            v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc).ToLocalTime() : v));
+                }
+            }
+        }
     }
 }
