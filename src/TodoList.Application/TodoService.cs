@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using TodoList.Dtos.Todo;
 using TodoList.Services;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Validation;
 
 namespace TodoList
 {
@@ -68,8 +68,8 @@ namespace TodoList
             {
                 TodoStatus.Pending => TodoStatus.InProgress,
                 TodoStatus.InProgress => TodoStatus.Completed,
-                TodoStatus.Completed => throw new BadHttpRequestException("Todo is already completed"),
-                _ => throw new BadHttpRequestException("Todo status is unknown"),
+                TodoStatus.Completed => throw new AbpValidationException("Todo is already completed"),
+                _ => throw new AbpValidationException("Todo status is unknown"),
             };
             
             await _todoRepository.UpdateAsync(todo);
