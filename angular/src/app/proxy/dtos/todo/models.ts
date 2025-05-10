@@ -20,6 +20,7 @@ export interface TodoDto {
 
 export interface TodoQueryDto {
   status?: TodoStatus;
+  priority?: TodoPriority;
 }
 
 export interface UpdateTodoDto {

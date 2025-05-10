@@ -93,6 +93,10 @@ namespace TodoList
             {
                 queryable = queryable.Where(t => t.Status == todoQueryDto.Status);
             }
+            if (todoQueryDto.Priority is not null)
+            {
+                queryable = queryable.Where(t => t.Priority == todoQueryDto.Priority);
+            }
             return await AsyncExecuter.ToListAsync(queryable);
         }
     }

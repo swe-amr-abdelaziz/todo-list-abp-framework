@@ -78,7 +78,7 @@ This is a layered startup solution based on [Domain Driven Design (DDD)](https:/
 - Basic CRUD operations
 - Input validations
 - Marking todos as completed
-- Status filter added to the list
+- Status and priority filters are added to the list
 - Bonus: Loading spinner applied for a better user experience
 
 ## Challenges Faced

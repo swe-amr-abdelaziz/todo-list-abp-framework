@@ -1,10 +1,24 @@
 <div class="mb-2">
-  <label for="status">Status</label>
-  <select class="form-control form-control-sm" id="status" (change)="onStatusChange($event)">
-    <option [ngValue]="">All</option>
-    <option [ngValue]="status.value" [selected]="status.value == todoQueryParams.status"
-      *ngFor="let status of todoStatusOptions">
-      {{ TodoStatus[status.value] }}
-    </option>
-  </select>
+  <div class="row g-2">
+    <div class="col-md-6">
+      <label for="status">Status</label>
+      <select class="form-control form-control-sm" id="status" (change)="onStatusChange($event)">
+        <option [ngValue]="">All</option>
+        <option [ngValue]="status.value" [selected]="status.value == todoQueryParams.status"
+          *ngFor="let status of todoStatusOptions">
+          {{ TodoStatus[status.value] }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="priority">Priority</label>
+      <select class="form-control form-control-sm" id="priority" (change)="onPriorityChange($event)">
+        <option [ngValue]="">All</option>
+        <option [ngValue]="priority.value" [selected]="priority.value == todoQueryParams.priority"
+          *ngFor="let priority of todoPriorityOptions">
+          {{ TodoPriority[priority.value] }}
+        </option>
+      </select>
+    </div>
+  </div>
 </div>

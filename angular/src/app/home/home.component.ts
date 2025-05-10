@@ -89,6 +89,7 @@ export class HomeComponent extends AsyncComponent implements OnInit {
   private subscribeToRouteParams() {
     this.route.queryParams.subscribe(params => {
       this.getList({
+        priority: params['priority'] || null,
         status: params['status'] || null,
       });
     });

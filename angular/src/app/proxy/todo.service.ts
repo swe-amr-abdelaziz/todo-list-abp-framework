@@ -39,7 +39,7 @@ export class TodoService {
     this.restService.request<any, TodoDto[]>({
       method: 'GET',
       url: '/api/app/todo',
-      params: { status: todoQueryDto.status },
+      params: { status: todoQueryDto.status, priority: todoQueryDto.priority },
     },
     { apiName: this.apiName,...config });
   

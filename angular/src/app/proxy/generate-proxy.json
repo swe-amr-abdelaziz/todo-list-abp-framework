@@ -1027,6 +1027,18 @@
                   "constraintTypes": null,
                   "bindingSourceId": "ModelBinding",
                   "descriptorName": "todoQueryDto"
+                },
+                {
+                  "nameOnMethod": "todoQueryDto",
+                  "name": "Priority",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "todoQueryDto"
                 }
               ],
               "returnValue": {
@@ -4084,6 +4096,18 @@
           "name": "Status",
           "jsonName": null,
           "type": "TodoList.TodoStatus?",
+          "typeSimple": "enum?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Priority",
+          "jsonName": null,
+          "type": "TodoList.TodoPriority?",
           "typeSimple": "enum?",
           "isRequired": false,
           "minLength": null,
