@@ -2,65 +2,84 @@
 
 ## About this solution
 
-This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed. Check the [Application Startup Template](https://abp.io/docs/latest/solution-templates/layered-web-application) documentation for more info.
+This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practices. It comes pre-configured with all essential ABP modules. For more information, see the [Application Startup Template](https://abp.io/docs/latest/solution-templates/layered-web-application).
 
-### Pre-requirements
+## How to Run the Project
 
-- [.NET9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-- [Node v18 or 20](https://nodejs.org/en)
+1. **Install ABP CLI globally**
 
-### Configurations
+   ```bash
+   dotnet tool install -g Volo.Abp.Studio.Cli
+   ```
 
-The solution comes with a default configuration that works out of the box. However, you may consider to change the following configuration before running your solution:
+2. **Install dependencies**
 
-- Check the `ConnectionStrings` in `appsettings.json` files under the `TodoList.HttpApi.Host` and `TodoList.DbMigrator` projects and change it if you need.
+   ```bash
+   abp install-libs
+   ```
 
-### Before running the application
+3. **Set up the database**
 
-- Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-- Run `TodoList.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+   - Make sure Docker is installed and running.
+   - Start the database using Docker Compose (located in the root folder):
 
-#### Generating a Signing Certificate
+     ```bash
+     docker-compose up -d
+     ```
 
-In the production environment, you need to use a production signing certificate. ABP Framework sets up signing and encryption certificates in your application and expects an `openiddict.pfx` file in your application.
+4. **Run migrations**
 
-To generate a signing certificate, you can use the following command:
+   - Option 1: Run `TodoList.DbMigrator` project in Visual Studio.
+   - Option 2: Open a terminal in the `TodoList.DbMigrator` folder and run:
 
-```bash
-dotnet dev-certs https -v -ep openiddict.pfx -p b0d616f6-ad6e-4965-9041-6f553caa1028
-```
+     ```bash
+     dotnet run
+     ```
 
-> `b0d616f6-ad6e-4965-9041-6f553caa1028` is the password of the certificate, you can change it to any password you want.
+5. **Start the backend server**
 
-It is recommended to use **two** RSA certificates, distinct from the certificate(s) used for HTTPS: one for encryption, one for signing.
+   - Option 1: Run `TodoList.HttpApi.Host` project in Visual Studio.
+   - Option 2: Open a terminal in the `TodoList.HttpApi.Host` folder and run:
 
-For more information, please refer to: [OpenIddict Certificate Configuration](https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html#registering-a-certificate-recommended-for-production-ready-scenarios)
+     ```bash
+     dotnet run
+     ```
 
-> Also, see the [Configuring OpenIddict](https://abp.io/docs/latest/Deployment/Configuring-OpenIddict#production-environment) documentation for more information.
+6. **Start the Angular frontend**
 
-### Solution structure
+   - Open a terminal in the `angular` project folder and run:
 
-This is a layered monolith application that consists of the following applications:
+     ```bash
+     npm start
+     ```
 
-- `TodoList.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
-- `TodoList.HttpApi.Host`: ASP.NET Core API application that is used to expose the APIs to the clients.
-- `angular`: Angular application.
+7. **Open the application**
 
-## Deploying the application
+   - Open your browser at `http://localhost:4200`
 
-Deploying an ABP application follows the same process as deploying any .NET or ASP.NET Core application. However, there are important considerations to keep in mind. For detailed guidance, refer to ABP's [deployment documentation](https://abp.io/docs/latest/Deployment/Index).
+## Any Setup Requirements
 
-### Additional resources
+- ABP CLI:
 
-#### Internal Resources
+  ```bash
+  dotnet tool install -g Volo.Abp.Studio.Cli
+  ```
 
-You can find detailed setup and configuration guide(s) for your solution below:
+- Client-side packages:
 
-- [Angular](./angular/README.md)
+  ```bash
+  abp install-libs
+  ```
 
-#### External Resources
+## What Has Been Completed
 
-You can see the following resources to learn more about your solution and the ABP Framework:
+- Basic CRUD operations
+- Input validations
+- Marking todos as completed
+- Status filter added to the list
+- Bonus: Loading spinner applied for a better user experience
 
-- [Web Application Development Tutorial](https://abp.io/docs/latest/tutorials/book-store/part-1)
-- [Application Startup Template](https://abp.io/docs/latest/startup-templates/application/index)
+## Challenges Faced
+
+- **Handling time zones**: syncing server-side timestamps with the local time on the client
+- Managing multiple UI interactions and keeping todo state updates consistent across the interface
