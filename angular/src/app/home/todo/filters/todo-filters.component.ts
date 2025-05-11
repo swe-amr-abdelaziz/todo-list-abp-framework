@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs';
 import { TodoPriority, todoPriorityOptions, TodoStatus, todoStatusOptions } from 'src/app/proxy';
 import { TodoQueryDto, TodoSortBy, todoSortByOptions } from 'src/app/proxy/dtos/todo';
+import { AsyncComponent } from 'src/app/shared/classes/async-component.interface';
 import { NavigatorService } from 'src/app/shared/services/navigator.service';
 
 @Component({
@@ -10,7 +12,7 @@ import { NavigatorService } from 'src/app/shared/services/navigator.service';
   templateUrl: './todo-filters.component.html',
   styleUrls: ['./todo-filters.component.scss'],
 })
-export class TodoFiltersComponent implements OnInit {
+export class TodoFiltersComponent extends AsyncComponent implements OnInit {
   todoQueryParams: TodoQueryDto;
   TodoStatus = TodoStatus;
   todoStatusOptions = todoStatusOptions;
@@ -23,11 +25,13 @@ export class TodoFiltersComponent implements OnInit {
   constructor(
     private readonly navigatorService: NavigatorService,
     private readonly route: ActivatedRoute,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.navigatorService.refresh();
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.todoQueryParams = {
         priority: params['priority'] || null,
         status: params['status'] || null,

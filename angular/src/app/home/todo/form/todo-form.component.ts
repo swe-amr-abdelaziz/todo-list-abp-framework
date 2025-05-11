@@ -17,6 +17,8 @@ import {
   NgbTimeStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TodoFormOutput } from 'src/app/shared/interfaces';
+import { AsyncComponent } from 'src/app/shared/classes/async-component.interface';
+import { takeUntil } from 'rxjs';
 
 @Component({
   standalone: false,
@@ -25,7 +27,7 @@ import { TodoFormOutput } from 'src/app/shared/interfaces';
   styleUrls: ['./todo-form.component.scss'],
   providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }],
 })
-export class TodoFormComponent implements OnInit {
+export class TodoFormComponent extends AsyncComponent implements OnInit {
   @Input() todoId?: string = null;
   @Output() todoSubmitted = new EventEmitter<TodoFormOutput>();
 
@@ -49,7 +51,9 @@ export class TodoFormComponent implements OnInit {
     private readonly toast: ToasterService,
     private readonly todoFormService: TodoFormService,
     private readonly todoService: TodoService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.todoFormService.todoId$.subscribe(todoId => {
@@ -57,20 +61,23 @@ export class TodoFormComponent implements OnInit {
       if (this.isEdit) {
         this.todoFormService.isLoading = true;
         this.formTitle = 'Edit Todo';
-        this.todoService.get(todoId).subscribe({
-          next: todo => {
-            this.todo = todo;
-            this.formalizeDueDate(this.todo.dueDate);
-            this.calculateMinDueDate();
-            this.buildForm();
-            this.isFormOpen = true;
-            this.todoFormService.isLoading = false;
-          },
-          error: () => {
-            this.toast.error('Error occurred while loading todo');
-            this.todoFormService.isLoading = false;
-          },
-        });
+        this.todoService
+          .get(todoId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: todo => {
+              this.todo = todo;
+              this.formalizeDueDate(this.todo.dueDate);
+              this.calculateMinDueDate();
+              this.buildForm();
+              this.isFormOpen = true;
+              this.todoFormService.isLoading = false;
+            },
+            error: () => {
+              this.toast.error('Error occurred while loading todo');
+              this.todoFormService.isLoading = false;
+            },
+          });
       } else {
         this.formTitle = 'Add New Todo';
         this.todo = {
@@ -142,31 +149,37 @@ export class TodoFormComponent implements OnInit {
         if (result === Confirmation.Status.confirm) {
           this.todoFormService.isLoading = true;
           if (this.isEdit) {
-            this.todoService.update(this.todo.id, this.todo).subscribe({
-              next: updatedTodo => {
-                this.toast.success('Todo has been updated successfully');
-                this.todoFormService.isLoading = false;
-                this.todoSubmitted.emit({ isEdit: this.isEdit, todo: updatedTodo });
-                this.isFormOpen = false;
-              },
-              error: () => {
-                this.toast.error('Error occurred while updating todo');
-                this.isFormOpen = false;
-              },
-            });
+            this.todoService
+              .update(this.todo.id, this.todo)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: updatedTodo => {
+                  this.toast.success('Todo has been updated successfully');
+                  this.todoFormService.isLoading = false;
+                  this.todoSubmitted.emit({ isEdit: this.isEdit, todo: updatedTodo });
+                  this.isFormOpen = false;
+                },
+                error: () => {
+                  this.toast.error('Error occurred while updating todo');
+                  this.isFormOpen = false;
+                },
+              });
           } else {
-            this.todoService.create(this.todo).subscribe({
-              next: createdTodo => {
-                this.toast.success('Todo has been created successfully');
-                this.todoFormService.isLoading = false;
-                this.todoSubmitted.emit({ isEdit: this.isEdit, todo: createdTodo });
-                this.isFormOpen = false;
-              },
-              error: () => {
-                this.toast.error('Error occurred while creating todo');
-                this.isFormOpen = false;
-              },
-            });
+            this.todoService
+              .create(this.todo)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: createdTodo => {
+                  this.toast.success('Todo has been created successfully');
+                  this.todoFormService.isLoading = false;
+                  this.todoSubmitted.emit({ isEdit: this.isEdit, todo: createdTodo });
+                  this.isFormOpen = false;
+                },
+                error: () => {
+                  this.toast.error('Error occurred while creating todo');
+                  this.isFormOpen = false;
+                },
+              });
           }
         }
       });

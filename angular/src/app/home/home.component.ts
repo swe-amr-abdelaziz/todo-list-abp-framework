@@ -7,6 +7,7 @@ import { TodoFormService } from './todo/form/todo-form.service';
 import { TodoFormOutput, TodoStatusUpdatedOutput } from '../shared/interfaces';
 import { NavigatorService } from '../shared/services/navigator.service';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs';
 
 @Component({
   standalone: false,
@@ -66,21 +67,24 @@ export class HomeComponent extends AsyncComponent implements OnInit {
 
   deleteTodo(id: string): void {
     this.isLoading = true;
-    this.todoService.delete(id).subscribe({
-      next: () => {
-        this.todoList = this.todoList.filter(todo => todo.id !== id);
-        this.toast.success('Todo has been deleted successfully');
-        this.isLoading = false;
-      },
-      error: () => {
-        this.toast.error('Error occurred while deleting todo');
-        this.isLoading = false;
-      },
-    });
+    this.todoService
+      .delete(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.todoList = this.todoList.filter(todo => todo.id !== id);
+          this.toast.success('Todo has been deleted successfully');
+          this.isLoading = false;
+        },
+        error: () => {
+          this.toast.error('Error occurred while deleting todo');
+          this.isLoading = false;
+        },
+      });
   }
 
   private subscribeToRouteParams() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.getList({
         priority: params['priority'] || null,
         status: params['status'] || null,
@@ -92,16 +96,19 @@ export class HomeComponent extends AsyncComponent implements OnInit {
 
   private getList(params: TodoQueryDto): void {
     this.isLoading = true;
-    this.todoService.getList(params).subscribe({
-      next: data => {
-        this.todoList = data;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.toast.error('Error occurred while loading todo list');
-        this.isLoading = false;
-      },
-    });
+    this.todoService
+      .getList(params)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: data => {
+          this.todoList = data;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.toast.error('Error occurred while loading todo list');
+          this.isLoading = false;
+        },
+      });
   }
 
   private filterTodoItemsAfterUpdate(): void {

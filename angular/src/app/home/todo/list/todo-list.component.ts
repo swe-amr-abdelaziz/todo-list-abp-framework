@@ -4,6 +4,8 @@ import { TodoPriority, TodoService, TodoStatus } from 'src/app/proxy';
 import { TodoDto } from 'src/app/proxy/dtos/todo';
 import { TodoFormService } from '../form/todo-form.service';
 import { TodoStatusUpdatedOutput } from 'src/app/shared/interfaces';
+import { AsyncComponent } from 'src/app/shared/classes/async-component.interface';
+import { takeUntil } from 'rxjs';
 
 @Component({
   standalone: false,
@@ -11,7 +13,7 @@ import { TodoStatusUpdatedOutput } from 'src/app/shared/interfaces';
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
 })
-export class TodoListComponent {
+export class TodoListComponent extends AsyncComponent {
   @Input() todoList: TodoDto[] = [];
   @Output() todoDeleted = new EventEmitter<string>();
   @Output() todoStatusUpdated = new EventEmitter<TodoStatusUpdatedOutput>();
@@ -23,7 +25,9 @@ export class TodoListComponent {
     private readonly confirmation: ConfirmationService,
     private readonly todoFormService: TodoFormService,
     private readonly todoService: TodoService,
-  ) {}
+  ) {
+    super();
+  }
 
   trackById(_: number, item: TodoDto): string {
     return item.id;
@@ -67,9 +71,12 @@ export class TodoListComponent {
       )
       .subscribe(result => {
         if (result === Confirmation.Status.confirm) {
-          this.todoService.updateStatus(id).subscribe(newStatus => {
-            this.todoStatusUpdated.emit({ id, status: newStatus });
-          });
+          this.todoService
+            .updateStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(newStatus => {
+              this.todoStatusUpdated.emit({ id, status: newStatus });
+            });
         }
       });
   }
